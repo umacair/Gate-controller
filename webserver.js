@@ -3,8 +3,8 @@ var fs = require('fs'); //require filesystem module
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
-var WINCH1UP = new Gpio(8,'out');
-var WINCH1DW = new Gpio(16,'out');
+var WINCH1UP = new Gpio(23,'out');
+var WINCH1DW = new Gpio(24,'out');
 var on = 0;
 var off = 1;
 var first = 0;
@@ -55,28 +55,9 @@ app.listen(8080, () => {
 })
 */
 io.sockets.on('connection', function (socket) {// WebSocket Connection
-  var lightvalue = 0; //static variable for current status
-  var light1value = 0;
-  var light2value = 0;
-  var light3value = 0;
   var winch1upvalue = 0;
-  var winch2upvalue = 0;
-  var winch3upvalue = 0;
-  var winch4upvalue = 0;
-  var winch5upvalue = 0;
-  var winch6upvalue = 0;
   var winch1dwvalue = 0;
-  var winch2dwvalue = 0;
-  var winch3dwvalue = 0;
-  var winch4dwvalue = 0;
-  var winch5dwvalue = 0;
-  var winch6dwvalue = 0;
   var winch1stvalue = 0;
-  var winch2stvalue = 0;
-  var winch3stvalue = 0;
-  var winch4stvalue = 0;
-  var winch5stvalue = 0;
-  var winch6stvalue = 0;
 
   if(WINCH1UP.readSync())
   {
