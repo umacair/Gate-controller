@@ -7,10 +7,6 @@ var WINCH1UP = new Gpio(23,'out');
 var WINCH1DW = new Gpio(24,'out');
 var on = 1;
 var off = 0;
-var first = 0;
-var first1 = 0;
-var first2 = 0;
-var first3 = 0;
 
 //var pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
@@ -26,34 +22,7 @@ function handler (req, res) { //create server
     res.write(data); //write data from index.html
     return res.end();
   });
-/*
-  fs.readFile(__dirname + '/public/style.css', function(err, datacss) { //read file index.html in public folder
-    if (err) {
-      res.writeHead(404, {'Content-Type': 'text/html'}); //display 404 on error
-      return res.end("404 Not Found");
-    }
-    res.writeHead(200, {'Content-Type': 'text/html'}); //write HTML
-    res.write(datacss); //write data from index.html
-    return res.end();
-  });
-*/
-}
 
-/*
-const express = require("express");
-const app = express();
-
-app.use(express.static('public'));
-app.use(express.static('./css/css'));
-
-app.get("/", function(req, res){
-  res.sendFile(__dirname + "/public/index.html");
-});
-
-app.listen(8080, () => {
-  console.log("IHMS ON");
-})
-*/
 io.sockets.on('connection', function (socket) {// WebSocket Connection
   var winch1upvalue = 0;
   var winch1dwvalue = 0;
@@ -76,9 +45,9 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   socket.on('winch1Up', function(data) { //get light switch status from client
     winch1upvalue = data;
-    if (winch1upvalue == 0) { //only change LED if status has changed
+    if (winch1upvalue == 1) { //only change LED if status has changed
       WINCH1DW.writeSync(!winch1upvalue);
-      wait(0.5);
+//      wait(0.5);
       WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
       socket.emit('winch1Dw',0);
       socket.emit('winch1St',0);
@@ -90,9 +59,9 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   socket.on('winch1Dw', function(data) { //get light switch status from client
     winch1dwvalue = data;
-    if (winch1dwvalue == 0) { //only change LED if status has changed
+    if (winch1dwvalue == 1) { //only change LED if status has changed
       WINCH1UP.writeSync(!winch1dwvalue);
-      wait(0.5);
+//      wait(0.5);
       WINCH1DW.writeSync(winch1dwvalue); //turn LED on or off
       socket.emit('winch1Up',0);
       socket.emit('winch1St',0);
