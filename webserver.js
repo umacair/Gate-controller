@@ -73,8 +73,8 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   socket.on('winch1St', function(data) { //get light switch status from client
     winch1stvalue = data;
     if (winch1stvalue == 1) { //only change LED if status has changed
-      WINCH1DW.writeSync(!winch1stvalue); //turn LED on or off
-      WINCH1UP.writeSync(!winch1stvalue);
+      WINCH1DW.writeSync(winch1stvalue); //turn LED on or off
+      WINCH1UP.writeSync(winch1stvalue);
       socket.emit('winch1Dw',0);
       socket.emit('winch1Up',0);
     }
