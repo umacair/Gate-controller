@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+  <h1>Farm contoller</h1>
+  <div class="checkbox-wrapper-6">
+    <table>
+      <tr>
+        <th>NAME</th>
+        <th>OPEN</th>
+        <th>STOP</th>
+        <th>CLOSE</th>
+      </tr>
+      <tr>
+        <th>winch1</th>
+        <th><input class="tgl tgl-light" type="checkbox" id="winch1Up"><label for="winch1Up" class="tgl-btn"></label>
+        </th>
+        <th><input class="tgl tgl-light" type="checkbox" id="winch1St"><label for="winch1St" class="tgl-btn"></label>
+        </th>
+        <th><input class="tgl tgl-light" type="checkbox" id="winch1Dw"><label for="winch1Dw" class="tgl-btn"></label>
+        </th>
+      </tr>
+    </table>
+  </div>
+  <div class="container">
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script>
+      var socket = io(); //load socket.io-client and connect to the host that serves the page
+      window.addEventListener("load", function () { //when page loads
+        var lightbox = document.getElementById("light");
+        var lightbox1 = document.getElementById("light1");
+        var lightbox2 = document.getElementById("light2");
+        var lightbox3 = document.getElementById("light3");
+        var winch1Upbox = document.getElementById("winch1Up");
+        var winch2Upbox = document.getElementById("winch2Up");
+        var winch3Upbox = document.getElementById("winch3Up");
+        var winch4Upbox = document.getElementById("winch4Up");
+        var winch5Upbox = document.getElementById("winch5Up");
+        var winch6Upbox = document.getElementById("winch6Up");
+        var winch1Dwbox = document.getElementById("winch1Dw");
+        var winch2Dwbox = document.getElementById("winch2Dw");
+        var winch3Dwbox = document.getElementById("winch3Dw");
+        var winch4Dwbox = document.getElementById("winch4Dw");
+        var winch5Dwbox = document.getElementById("winch5Dw");
+        var winch6Dwbox = document.getElementById("winch6Dw");
+        var winch1Stbox = document.getElementById("winch1St");
+        var winch2Stbox = document.getElementById("winch2St");
+        var winch3Stbox = document.getElementById("winch3St");
+        var winch4Stbox = document.getElementById("winch4St");
+        var winch5Stbox = document.getElementById("winch5St");
+        var winch6Stbox = document.getElementById("winch6St");
+
+        winch1Upbox.addEventListener("change", function () { //add event listener for when checkbox changes
+          socket.emit("winch1Up", Number(this.checked)); //send button status to server (as 1 or 0)
+        });
+
+        winch1Dwbox.addEventListener("change", function () { //add event listener for when checkbox changes
+          socket.emit("winch1Dw", Number(this.checked)); //send button status to server (as 1 or 0)
+        });
+        winch1Stbox.addEventListener("change", function () { //add event listener for when checkbox changes
+          socket.emit("winch1St", Number(this.checked)); //send button status to server (as 1 or 0)
+        });
+      });
+
+      socket.on('winch1Up', function (data) { //get button status from client
+        document.getElementById("winch1Up").checked = data; //change checkbox according to push button on Raspberry Pi
+        socket.emit("winch1Up", data); //send push button status to back to server
+      });
+
+      socket.on('winch1Dw', function (data) { //get button status from client
+        document.getElementById("winch1Dw").checked = data; //change checkbox according to push button on Raspberry Pi
+        socket.emit("winch1Dw", data); //send push button status to back to server
+      });
+
+      socket.on('winch1St', function (data) { //get button status from client
+        document.getElementById("winch1St").checked = data; //change checkbox according to push button on Raspberry Pi
+        socket.emit("winch1St", data); //send push button status to back to server
+      });
+
+</script>
+
+
+<style>
+  .checkbox-wrapper-6 .tgl {
+  display: none;
+}
+.checkbox-wrapper-6 .tgl,
+.checkbox-wrapper-6 .tgl:after,
+.checkbox-wrapper-6 .tgl:before,
+.checkbox-wrapper-6 .tgl *,
+.checkbox-wrapper-6 .tgl *:after,
+.checkbox-wrapper-6 .tgl *:before,
+.checkbox-wrapper-6 .tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+.checkbox-wrapper-6 .tgl::-moz-selection,
+.checkbox-wrapper-6 .tgl:after::-moz-selection,
+.checkbox-wrapper-6 .tgl:before::-moz-selection,
+.checkbox-wrapper-6 .tgl *::-moz-selection,
+.checkbox-wrapper-6 .tgl *:after::-moz-selection,
+.checkbox-wrapper-6 .tgl *:before::-moz-selection,
+.checkbox-wrapper-6 .tgl + .tgl-btn::-moz-selection,
+.checkbox-wrapper-6 .tgl::selection,
+.checkbox-wrapper-6 .tgl:after::selection,
+.checkbox-wrapper-6 .tgl:before::selection,
+.checkbox-wrapper-6 .tgl *::selection,
+.checkbox-wrapper-6 .tgl *:after::selection,
+.checkbox-wrapper-6 .tgl *:before::selection,
+.checkbox-wrapper-6 .tgl + .tgl-btn::selection {
+  background: none;
+}
+.checkbox-wrapper-6 .tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.checkbox-wrapper-6 .tgl + .tgl-btn:after,
+.checkbox-wrapper-6 .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+.checkbox-wrapper-6 .tgl + .tgl-btn:after {
+  left: 0;
+}
+.checkbox-wrapper-6 .tgl + .tgl-btn:before {
+  display: none;
+}
+.checkbox-wrapper-6 .tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+
+.checkbox-wrapper-6 .tgl-light + .tgl-btn {
+  background: #f0f0f0;
+  border-radius: 2em;
+  padding: 2px;
+  transition: all 0.4s ease;
+}
+.checkbox-wrapper-6 .tgl-light + .tgl-btn:after {
+  border-radius: 50%;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.checkbox-wrapper-6 .tgl-light:checked + .tgl-btn {
+  background: #9FD6AE;
+}
+</style>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+var http = require('http').createServer(handler); //require http server, and create server with function handler()
+var fs = require('fs'); //require filesystem module
+var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
+var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+
+var WINCH1UP = new Gpio(8,'out');
+var WINCH1DW = new Gpio(16,'out');
+var on = 0;
+var off = 1;
+var first = 0;
+var first1 = 0;
+var first2 = 0;
+var first3 = 0;
+
+//var pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
+
+http.listen(8080); //listen to port 8080
+
+function handler (req, res) { //create server
+  fs.readFile(__dirname + '/public/index.html', function(err, data) { //read file index.html in public folder
+    if (err) {
+      res.writeHead(404, {'Content-Type': 'text/html'}); //display 404 on error
+      return res.end("404 Not Found");
+    }
+    res.writeHead(200, {'Content-Type': 'text/html'}); //write HTML
+    res.write(data); //write data from index.html
+    return res.end();
+  });
+/*
+  fs.readFile(__dirname + '/public/style.css', function(err, datacss) { //read file index.html in public folder
+    if (err) {
+      res.writeHead(404, {'Content-Type': 'text/html'}); //display 404 on error
+      return res.end("404 Not Found");
+    }
+    res.writeHead(200, {'Content-Type': 'text/html'}); //write HTML
+    res.write(datacss); //write data from index.html
+    return res.end();
+  });
+*/
+}
+
+/*
+const express = require("express");
+const app = express();
+
+app.use(express.static('public'));
+app.use(express.static('./css/css'));
+
+app.get("/", function(req, res){
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+app.listen(8080, () => {
+  console.log("IHMS ON");
+})
+*/
+io.sockets.on('connection', function (socket) {// WebSocket Connection
+  var lightvalue = 0; //static variable for current status
+  var light1value = 0;
+  var light2value = 0;
+  var light3value = 0;
+  var winch1upvalue = 0;
+  var winch2upvalue = 0;
+  var winch3upvalue = 0;
+  var winch4upvalue = 0;
+  var winch5upvalue = 0;
+  var winch6upvalue = 0;
+  var winch1dwvalue = 0;
+  var winch2dwvalue = 0;
+  var winch3dwvalue = 0;
+  var winch4dwvalue = 0;
+  var winch5dwvalue = 0;
+  var winch6dwvalue = 0;
+  var winch1stvalue = 0;
+  var winch2stvalue = 0;
+  var winch3stvalue = 0;
+  var winch4stvalue = 0;
+  var winch5stvalue = 0;
+  var winch6stvalue = 0;
+
+  if(WINCH1UP.readSync())
+  {
+    socket.emit('winch1Up',on);
+  }else{
+    socket.emit('winch1Up',off);
+  }
+
+
+  if(WINCH1DW.readSync())
+  {
+    socket.emit('winch1Dw',on);
+  }else{
+    socket.emit('winch1Dw',off);
+  }
+
+  socket.on('winch1Up', function(data) { //get light switch status from client
+    winch1upvalue = data;
+    if (winch1upvalue == 1) { //only change LED if status has changed
+      WINCH1UP.writeSync(!winch1upvalue); //turn LED on or off
+      WINCH1DW.writeSync(winch1upvalue);
+      socket.emit('winch1Dw',0);
+      socket.emit('winch1St',0);
+    }
+  });
+
+
+  socket.on('winch1Dw', function(data) { //get light switch status from client
+    winch1dwvalue = data;
+    if (winch1dwvalue == 1) { //only change LED if status has changed
+      WINCH1DW.writeSync(!winch1dwvalue); //turn LED on or off
+      WINCH1UP.writeSync(winch1dwvalue);
+      socket.emit('winch1Up',0);
+      socket.emit('winch1St',0);
+    }
+  });
+
+  socket.on('winch1St', function(data) { //get light switch status from client
+    winch1stvalue = data;
+    if (winch1stvalue == 1) { //only change LED if status has changed
+      WINCH1DW.writeSync(winch1stvalue); //turn LED on or off
+      WINCH1UP.writeSync(winch1stvalue);
+      socket.emit('winch1Dw',0);
+      socket.emit('winch1Up',0);
+    }
+  });
+
+});
+// gpio 핀 초기화
+process.on('SIGINT', function () { //on ctrl+c
+  WINCH1UP.writeSync(1); // Turn LED off
+  WINCH1UP.unexport(); // Unexport LED GPIO to free resources
+  WINCH1DW.writeSync(1); // Turn LED off
+  WINCH1DW.unexport(); // Unexport LED GPIO to free resources
+  process.exit(); //exit completely
+});
