@@ -22,7 +22,7 @@ function handler (req, res) { //create server
     res.write(data); //write data from index.html
     return res.end();
   });
-
+}
 io.sockets.on('connection', function (socket) {// WebSocket Connection
   var winch1upvalue = 0;
   var winch1dwvalue = 0;
