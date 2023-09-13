@@ -5,8 +5,8 @@ var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
 var WINCH1UP = new Gpio(23,'out');
 var WINCH1DW = new Gpio(24,'out');
-var on = 1;
-var off = 0;
+var on = 0;
+var off = 1;
 
 //var pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
