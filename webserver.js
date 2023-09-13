@@ -8,6 +8,7 @@ var WINCH1DW = new Gpio(24,'out');
 var on = 0;
 var off = 1;
 var first = 0;
+var first2 = 0;
 
 //var pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
@@ -40,10 +41,10 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   if(WINCH1DW.readSync())
   {
-    first = 0;
+    first2 = 0;
     socket.emit('winch1Dw',on);
   }else{
-    first = 0;
+    first2 = 0;
     socket.emit('winch1Dw',off);
   }
 
@@ -76,7 +77,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   });
 
   socket.on('winch1Dw', function(data) { //get light switch status from client
-    if(first){
+    if(first2){
       if(WINCH1UP.readSync()){
         if(data){
           WINCH1UP.writeSync(off);
@@ -98,7 +99,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   
       }
     }else{
-      first = 1;
+      first2 = 1;
 
     }
   });
