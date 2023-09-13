@@ -35,24 +35,24 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     socket.emit('winch1Up',off);
   }
 
-
+/*
   if(WINCH1DW.readSync())
   {
     socket.emit('winch1Dw',on);
   }else{
     socket.emit('winch1Dw',off);
   }
-
+*/
   socket.on('winch1Up', function(data) { //get light switch status from client
     winch1upvalue = data;
-    if (winch1upvalue == 0) { //only change LED if status has changed
+    if (winch1upvalue == off) { //only change LED if status has changed
 //      WINCH1DW.writeSync(!winch1upvalue);
 //      wait(0.5);
       WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
       socket.emit('winch1Dw',0);
       socket.emit('winch1St',0);
-    }else{
-      WINCH1UP.writeSync(!winch1upvalue); //turn LED on or off
+    }else{//on 일때
+      WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
     }
   });
 /*
