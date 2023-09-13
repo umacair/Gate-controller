@@ -43,6 +43,10 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if(first){
       if(WINCH1UP.readSync()){
         if(data){
+          WINCH1DW.writeSync(off);
+          socket.emit('winch1Dw',0);
+          socket.emit('winchSt',0);
+          wait(0.5);
           WINCH1UP.writeSync(on); //turn LED on or of
   
         }else{
