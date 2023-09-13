@@ -104,6 +104,16 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     }
   });
 
+  socket.on('winch1St', function(data) { //get light switch status from client
+
+    if(data){
+      WINCH1UP.writeSync(off);
+      socket.emit('winch1Up',0);
+      WINCH1DW.writeSync(off);
+      socket.emit('winch1Dw',0);
+    }
+  });
+
 
 
 });
