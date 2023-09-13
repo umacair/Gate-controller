@@ -7,6 +7,7 @@ var WINCH1UP = new Gpio(23,'out');
 var WINCH1DW = new Gpio(24,'out');
 var on = 0;
 var off = 1;
+var first = 0;
 
 //var pushButton = new Gpio(17, 'in', 'both'); //use GPIO pin 17 as input, and 'both' button presses, and releases should be handled
 
@@ -30,10 +31,39 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   if(WINCH1UP.readSync())
   {
+    first = 0;
     socket.emit('winch1Up',on);
   }else{
+    first = 0;
     socket.emit('winch1Up',off);
   }
+
+
+  socket.on('winch1Up', function(data) { //get light switch status from client
+    if(first){
+      if(WINCH1UP.readSync()){
+        if(data){
+          WINCH1UP.writeSync(on); //turn LED on or of
+  
+        }else{
+        }
+  
+      }else{
+        if(data){
+  
+        }else{
+          WINCH1UP.writeSync(off); //turn LED on or of
+  
+        }
+  
+      }
+    }else{
+      first = 1;
+
+    }
+  });
+
+
 
 /*
   if(WINCH1DW.readSync())
@@ -42,7 +72,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   }else{
     socket.emit('winch1Dw',off);
   }
-*/
+
   socket.on('winch1Up', function(data) { //get light switch status from client
     winch1upvalue = data;
     if (winch1upvalue == off) { //only change LED if status has changed
@@ -55,7 +85,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
       WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
     }
   });
-/*
+
   socket.on('winch1Up', function(data) { //get light switch status from client
     winch1upvalue = data;
     if (winch1upvalue == 0) { //only change LED if status has changed
