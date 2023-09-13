@@ -54,7 +54,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           WINCH1DW.writeSync(off);
           socket.emit('winch1Dw',0);
           socket.emit('winch1St',0);
-          wait(0.5);
+//          wait(0.5);
           WINCH1UP.writeSync(on); //turn LED on or of
   
         }else{
@@ -83,7 +83,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
           socket.emit('winch1St',0);
-          wait(0.5);
+//          wait(0.5);
           WINCH1DW.writeSync(on); //turn LED on or of
   
         }else{
