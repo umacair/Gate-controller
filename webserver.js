@@ -38,6 +38,14 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     socket.emit('winch1Up',off);
   }
 
+  if(WINCH1DW.readSync())
+  {
+    first = 0;
+    socket.emit('winch1Dw',on);
+  }else{
+    first = 0;
+    socket.emit('winch1Dw',off);
+  }
 
   socket.on('winch1Up', function(data) { //get light switch status from client
     if(first){
@@ -67,66 +75,36 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     }
   });
 
-
-
-/*
-  if(WINCH1DW.readSync())
-  {
-    socket.emit('winch1Dw',on);
-  }else{
-    socket.emit('winch1Dw',off);
-  }
-
-  socket.on('winch1Up', function(data) { //get light switch status from client
-    winch1upvalue = data;
-    if (winch1upvalue == off) { //only change LED if status has changed
-//      WINCH1DW.writeSync(!winch1upvalue);
-//      wait(0.5);
-      WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
-      socket.emit('winch1Dw',0);
-      socket.emit('winch1St',0);
-    }else{//on 일때
-      WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
-    }
-  });
-
-  socket.on('winch1Up', function(data) { //get light switch status from client
-    winch1upvalue = data;
-    if (winch1upvalue == 0) { //only change LED if status has changed
-      WINCH1DW.writeSync(!winch1upvalue);
-      wait(0.5);
-      WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
-      socket.emit('winch1Dw',0);
-      socket.emit('winch1St',0);
-    }else{
-      WINCH1UP.writeSync(!winch1upvalue); //turn LED on or off
-    }
-  });
-
-
   socket.on('winch1Dw', function(data) { //get light switch status from client
-    winch1dwvalue = data;
-    if (winch1dwvalue == 0) { //only change LED if status has changed
-      WINCH1UP.writeSync(!winch1dwvalue);
-      wait(0.5);
-      WINCH1DW.writeSync(winch1dwvalue); //turn LED on or off
-      socket.emit('winch1Up',0);
-      socket.emit('winch1St',0);
+    if(first){
+      if(WINCH1UP.readSync()){
+        if(data){
+          WINCH1UP.writeSync(off);
+          socket.emit('winch1Up',0);
+          socket.emit('winch1St',0);
+          wait(0.5);
+          WINCH1DW.writeSync(on); //turn LED on or of
+  
+        }else{
+        }
+  
+      }else{
+        if(data){
+  
+        }else{
+          WINCH1DW.writeSync(off); //turn LED on or of
+  
+        }
+  
+      }
     }else{
-      WINCH1DW.writeSync(!winch1dwvalue); //turn LED on or off
+      first = 1;
+
     }
   });
 
-  socket.on('winch1St', function(data) { //get light switch status from client
-    winch1stvalue = data;
-    if (winch1stvalue == 0) { //only change LED if status has changed
-      WINCH1DW.writeSync(winch1stvalue); //turn LED on or off
-      WINCH1UP.writeSync(winch1stvalue);
-      socket.emit('winch1Dw',0);
-      socket.emit('winch1Up',0);
-    }
-  });
-*/
+
+
 });
 // gpio 핀 초기화
 process.on('SIGINT', function () { //on ctrl+c
