@@ -10,6 +10,9 @@ var off = 1;
 var first = 0;
 var first2 = 0;
 
+WINCH1UP.writeSync(1);
+WINCH1DW.writeSync(1);
+
 http.listen(9090); //listen to port 8080
 
 function handler (req, res) { //create server
