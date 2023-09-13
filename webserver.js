@@ -42,7 +42,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   }else{
     socket.emit('winch1Dw',off);
   }
-
+/*
   socket.on('winch1Up', function(data) { //get light switch status from client
     winch1upvalue = data;
     if (winch1upvalue == 0) { //only change LED if status has changed
@@ -79,7 +79,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
       socket.emit('winch1Up',0);
     }
   });
-
+*/
 });
 // gpio 핀 초기화
 process.on('SIGINT', function () { //on ctrl+c
