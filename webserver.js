@@ -78,7 +78,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   socket.on('winch1Dw', function(data) { //get light switch status from client
     if(first2){
-      if(WINCH1UP.readSync()){
+      if(WINCH1DW.readSync()){
         if(data){
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
