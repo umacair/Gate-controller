@@ -48,11 +48,11 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if (winch1upvalue == 0) { //only change LED if status has changed
 //      WINCH1DW.writeSync(!winch1upvalue);
 //      wait(0.5);
-      WINCH1UP.writeSync(!winch1upvalue); //turn LED on or off
+      WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
       socket.emit('winch1Dw',0);
       socket.emit('winch1St',0);
     }else{
-      WINCH1UP.writeSync(winch1upvalue); //turn LED on or off
+      WINCH1UP.writeSync(!winch1upvalue); //turn LED on or off
     }
   });
 /*
