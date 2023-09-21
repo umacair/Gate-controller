@@ -118,7 +118,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 });
 
 function stopAll(){
-  setTimeout(stopDo(),2000);
+  setTimeout(stopDo(),200);
 }
 
 function stopDo(){
