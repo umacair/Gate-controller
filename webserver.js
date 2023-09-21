@@ -57,6 +57,13 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           socket.emit('winch1Dw',0);
           socket.emit('winch1St',0);
           WINCH1UP.writeSync(on); //turn LED on or of
+          setTimeout(function(){
+            socket.emit('winch1Up',0);
+            socket.emit('winch1Dw',0);
+            socket.emit('winch1St',1);
+            console.log('hellostop');
+        
+          },20000);
   
         }else{
         }
@@ -91,7 +98,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
             socket.emit('winch1St',1);
             console.log('hellostop');
         
-          },2000);
+          },20000);
   
         }else{
         }
