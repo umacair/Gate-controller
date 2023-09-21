@@ -1,5 +1,7 @@
 var http = require('http').createServer(handler); //require http server, and create server with function handler()
+const { Console } = require('console');
 var fs = require('fs'); //require filesystem module
+const { setTimeout } = require('timers');
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
 
@@ -54,7 +56,6 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           WINCH1DW.writeSync(off);
           socket.emit('winch1Dw',0);
           socket.emit('winch1St',0);
-//          wait(0.5);
           WINCH1UP.writeSync(on); //turn LED on or of
   
         }else{
@@ -83,8 +84,9 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
           socket.emit('winch1St',0);
-//          wait(0.5);
           WINCH1DW.writeSync(on); //turn LED on or of
+          stopAll;
+          Console.log();
   
         }else{
         }
@@ -114,10 +116,18 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     }
   });
 
-
-
 });
 
+function stopAll(){
+  setTimeout(stopDo(),2000);
+}
+
+function stopDo(){
+  socket.emit('winch1Up',0);
+  socket.emit('winch1Dw',0);
+  socket.emit('winch1St',1);
+
+}
 // gpio pin init
 process.on('SIGINT', function () { //on ctrl+c
   WINCH1UP.writeSync(off); // Turn LED off
