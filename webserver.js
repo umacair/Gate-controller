@@ -85,7 +85,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           socket.emit('winch1Up',0);
           socket.emit('winch1St',0);
           WINCH1DW.writeSync(on); //turn LED on or of
-          stopAll;
+          stopAll();
   
         }else{
         }
