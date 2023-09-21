@@ -120,6 +120,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 function stopAll(){
   setTimeout(function(){
     stopDo();
+    console.log('hellostop');
 
   },2000);
 }
