@@ -85,7 +85,13 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           socket.emit('winch1Up',0);
           socket.emit('winch1St',0);
           WINCH1DW.writeSync(on); //turn LED on or of
-          stopAll();
+          setTimeout(function(){
+            socket.emit('winch1Up',0);
+            socket.emit('winch1Dw',0);
+            socket.emit('winch1St',1);
+            console.log('hellostop');
+        
+          },2000);
   
         }else{
         }
@@ -117,20 +123,6 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
 });
 
-function stopAll(){
-  setTimeout(function(){
-    stopDo();
-    console.log('hellostop');
-
-  },2000);
-}
-
-function stopDo(){
-  socket.emit('winch1Up',0);
-  socket.emit('winch1Dw',0);
-  socket.emit('winch1St',1);
-
-}
 // gpio pin init
 process.on('SIGINT', function () { //on ctrl+c
   WINCH1UP.writeSync(off); // Turn LED off
