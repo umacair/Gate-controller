@@ -61,12 +61,12 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           onCheck = 1;
           offCheck = 0;
           WINCH1DW.writeSync(off);
+          WINCH1UP.writeSync(on);
           socket.emit('winch1Dw',0);
           socket.emit('winch1St',0);
-          WINCH1UP.writeSync(on); //turn LED on or of
           setTimeout(function(){
             closeAll(socket,1);        
-          },5000);
+          },20000);
   
         }else{
         }
@@ -76,8 +76,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   
         }else{
           onCheck = 0;
-          WINCH1UP.writeSync(off); //turn LED on or of
-  
+          closeAll(socket,2);  
         }
   
       }
@@ -101,7 +100,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           setTimeout(function(){
             closeAll(socket,0);
         
-          },5000);
+          },20000);
   
         }else{
         }
@@ -111,7 +110,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   
         }else{
           offCheck = 0;
-          WINCH1DW.writeSync(off); //turn LED on or of
+          closeAll(socket,2);
   
         }
   
@@ -143,22 +142,18 @@ process.on('SIGINT', function () { //on ctrl+c
 function closeAll(socket, check){
   if(check == 1){
     if(onCheck){
-      socket.emit('winch1Up',0);
-      socket.emit('winch1Dw',0);
       socket.emit('winch1St',1);
-      console.log('hi open');
       onCheck = 0;  
     }  
   }else if(check == 0){
     if(offCheck){
-      socket.emit('winch1Up',0);
-      socket.emit('winch1Dw',0);
       socket.emit('winch1St',1);
-      console.log('hi close');
       offCheck = 0;  
     }
   
   }else if(check == 2){
+    WINCH1DW.writeSync(off);
+    WINCH1UP.writeSync(off);
     socket.emit('winch1Up',0);
     socket.emit('winch1Dw',0);
     onCheck = 0;
