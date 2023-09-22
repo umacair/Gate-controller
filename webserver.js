@@ -55,11 +55,9 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   //open function
   socket.on('winch1Up', function(data) { //get light switch status from client
-    console.log('first :'+first);
     if(first){
       if(WINCH1UP.readSync()){
         if(data){
-          console.log('hi openBT');
           onCheck = 1;
           WINCH1DW.writeSync(off);
           socket.emit('winch1Dw',0);
@@ -67,7 +65,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           WINCH1UP.writeSync(on); //turn LED on or of
           setTimeout(function(){
             closeAll(socket,1);        
-          },3000);
+          },5000);
   
         }else{
         }
@@ -93,7 +91,6 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if(first2){
       if(WINCH1DW.readSync()){
         if(data){
-          console.log('hi closeBT');
           offCheck = 1;
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
@@ -102,7 +99,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           setTimeout(function(){
             closeAll(socket,0);
         
-          },3000);
+          },5000);
   
         }else{
         }
@@ -126,7 +123,6 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   //stop function
   socket.on('winch1St', function(data) { //get light switch status from client
     if(data){
-      console.log('hi stopBT');
       closeAll(socket,2);
     }
   });
@@ -148,7 +144,7 @@ function closeAll(socket, check){
       socket.emit('winch1Up',0);
       socket.emit('winch1Dw',0);
       socket.emit('winch1St',1);
-      console.log('hi close');
+      console.log('hi open');
       onCheck = 0;  
     }  
   }else if(check == 0){
@@ -164,7 +160,7 @@ function closeAll(socket, check){
     socket.emit('winch1Up',0);
     socket.emit('winch1Dw',0);
     onCheck = 0;
-    console.log('hi close');
+    console.log('hi stop');
     offCheck = 0;
   }
 }
