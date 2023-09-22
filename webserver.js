@@ -32,7 +32,7 @@ function handler (req, res) { //create server
   });
 }
 
-console.log('jijijiji');
+
 io.sockets.on('connection', function (socket) {// WebSocket Connection
 //pin status read
   if(WINCH1UP.readSync())
@@ -55,6 +55,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
 
   //open function
   socket.on('winch1Up', function(data) { //get light switch status from client
+    console.log('first :'+first);
     if(first){
       if(WINCH1UP.readSync()){
         if(data){
