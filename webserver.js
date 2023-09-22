@@ -32,7 +32,7 @@ function handler (req, res) { //create server
   });
 }
 
-Console.log('hihihi');
+console.log('jijijiji');
 io.sockets.on('connection', function (socket) {// WebSocket Connection
 //pin status read
   if(WINCH1UP.readSync())
