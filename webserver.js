@@ -63,7 +63,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           WINCH1UP.writeSync(on); //turn LED on or of
           setTimeout(function(){
             closeAll(socket,1);        
-          },20000);
+          },3000);
   
         }else{
         }
@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
           setTimeout(function(){
             closeAll(socket,0);
         
-          },20000);
+          },3000);
   
         }else{
         }
