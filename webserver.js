@@ -11,6 +11,9 @@ var on = 0;
 var off = 1;
 var first = 0;
 var first2 = 0;
+var onCheck = 0;
+var offCheck = 0;
+
 
 WINCH1UP.writeSync(1);
 WINCH1DW.writeSync(1);
@@ -53,16 +56,13 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if(first){
       if(WINCH1UP.readSync()){
         if(data){
+          onCheck = 1;
           WINCH1DW.writeSync(off);
           socket.emit('winch1Dw',0);
           socket.emit('winch1St',0);
           WINCH1UP.writeSync(on); //turn LED on or of
           setTimeout(function(){
-            socket.emit('winch1Up',0);
-            socket.emit('winch1Dw',0);
-            socket.emit('winch1St',1);
-            console.log('hellostop');
-        
+            closeAll(socket,1);        
           },20000);
   
         }else{
@@ -72,6 +72,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
         if(data){
   
         }else{
+          onCheck = 0;
           WINCH1UP.writeSync(off); //turn LED on or of
   
         }
@@ -88,15 +89,13 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if(first2){
       if(WINCH1DW.readSync()){
         if(data){
+          offCheck = 1;
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
           socket.emit('winch1St',0);
           WINCH1DW.writeSync(on); //turn LED on or of
           setTimeout(function(){
-            socket.emit('winch1Up',0);
-            socket.emit('winch1Dw',0);
-            socket.emit('winch1St',1);
-            console.log('hellostop');
+            closeAll(socket,0);
         
           },20000);
   
@@ -107,6 +106,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
         if(data){
   
         }else{
+          offCheck = 0;
           WINCH1DW.writeSync(off); //turn LED on or of
   
         }
@@ -121,10 +121,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   //stop function
   socket.on('winch1St', function(data) { //get light switch status from client
     if(data){
-      WINCH1UP.writeSync(off);
-      socket.emit('winch1Up',0);
-      WINCH1DW.writeSync(off);
-      socket.emit('winch1Dw',0);
+      closeAll(socket,2);
     }
   });
 
@@ -138,6 +135,30 @@ process.on('SIGINT', function () { //on ctrl+c
   WINCH1DW.unexport(); // Unexport LED GPIO to free resources
   process.exit(); //exit completely
 });
+
+function closeAll(socket, check){
+  if(check == 1){
+    if(onCheck){
+      socket.emit('winch1Up',0);
+      socket.emit('winch1Dw',0);
+      socket.emit('winch1St',1);
+      onCheck = 0;  
+    }  
+  }else if(check == 0){
+    if(offCheck){
+      socket.emit('winch1Up',0);
+      socket.emit('winch1Dw',0);
+      socket.emit('winch1St',1);
+      offCheck = 0;  
+    }
+  
+  }else if(check == 2){
+    socket.emit('winch1Up',0);
+    socket.emit('winch1Dw',0);
+    onCheck = 0;
+    offCheck = 0;
+  }
+}
 
 //delay function
 function wait(sec) {
