@@ -142,6 +142,7 @@ function closeAll(socket, check){
       socket.emit('winch1Up',0);
       socket.emit('winch1Dw',0);
       socket.emit('winch1St',1);
+      console.log('hi close');
       onCheck = 0;  
     }  
   }else if(check == 0){
@@ -149,6 +150,7 @@ function closeAll(socket, check){
       socket.emit('winch1Up',0);
       socket.emit('winch1Dw',0);
       socket.emit('winch1St',1);
+      console.log('hi close');
       offCheck = 0;  
     }
   
@@ -156,6 +158,7 @@ function closeAll(socket, check){
     socket.emit('winch1Up',0);
     socket.emit('winch1Dw',0);
     onCheck = 0;
+    console.log('hi close');
     offCheck = 0;
   }
 }
