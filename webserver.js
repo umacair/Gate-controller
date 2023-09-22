@@ -59,6 +59,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
       if(WINCH1UP.readSync()){
         if(data){
           onCheck = 1;
+          offCheck = 0;
           WINCH1DW.writeSync(off);
           socket.emit('winch1Dw',0);
           socket.emit('winch1St',0);
@@ -92,6 +93,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
       if(WINCH1DW.readSync()){
         if(data){
           offCheck = 1;
+          onCheck = 0;
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
           socket.emit('winch1St',0);
