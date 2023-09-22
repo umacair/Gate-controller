@@ -56,6 +56,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if(first){
       if(WINCH1UP.readSync()){
         if(data){
+          console.log('hi openBT');
           onCheck = 1;
           WINCH1DW.writeSync(off);
           socket.emit('winch1Dw',0);
@@ -89,6 +90,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
     if(first2){
       if(WINCH1DW.readSync()){
         if(data){
+          console.log('hi closeBT');
           offCheck = 1;
           WINCH1UP.writeSync(off);
           socket.emit('winch1Up',0);
@@ -121,6 +123,7 @@ io.sockets.on('connection', function (socket) {// WebSocket Connection
   //stop function
   socket.on('winch1St', function(data) { //get light switch status from client
     if(data){
+      console.log('hi stopBT');
       closeAll(socket,2);
     }
   });
